@@ -1,9 +1,10 @@
-import { ADD_DATA, DATA_ERROR, GET_DATA, SET_LOADING } from '../constants';
+import { ADD_DATA, DATA_ERROR, GET_DATA, SET_CURRENT, SET_LOADING } from '../constants';
 
 const initialState = {
     data: null,
     loading: false,
-    error: null
+    error: null,
+    current: null
 };
 
 const dataReducer = (state = initialState, action) => {
@@ -29,6 +30,11 @@ const dataReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true
+            };
+        case SET_CURRENT:
+            return {
+                ...state,
+                current: state.data.filter((s) => s.id === parseInt(action.payload))
             };
         default:
             return {

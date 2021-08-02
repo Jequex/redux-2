@@ -1,4 +1,4 @@
-import { GET_DATA, DATA_ERROR, ADD_DATA, SET_LOADING } from '../constants';
+import { GET_DATA, DATA_ERROR, ADD_DATA, SET_LOADING, SET_CURRENT } from '../constants';
 
 export const set_loading = () => {
     return {
@@ -38,9 +38,18 @@ export const add_data = (data) => {
             }
         });
         const returnData = res.json();
+        console.log(returnData);
         dispatch({
             type: ADD_DATA,
             payload: returnData
         });
+    };
+};
+
+export const set_current = (id) => {
+    // console.log(id);
+    return {
+        type: SET_CURRENT,
+        payload: id
     };
 };
