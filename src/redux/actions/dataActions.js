@@ -1,4 +1,4 @@
-import { GET_DATA, ADD_DATA, SET_LOADING } from '../constants';
+import { GET_DATA, DATA_ERROR, ADD_DATA, SET_LOADING } from '../constants';
 
 export const set_loading = () => {
     return {
@@ -6,26 +6,41 @@ export const set_loading = () => {
     };
 };
 
-export const get_data = () => {
-    return async (dispatch) => {
+export const get_data = () => async dispatch => {
+    // return async (dispatch) => {
         try {
             set_loading();
 
             const res = await fetch('/data');
             const data = await res.json();
 
-            return dispatch({
+            dispatch({
                 type: GET_DATA,
                 payload: data
             });
         } catch (error) {
-            console.log(error);
+            dispatch({
+                type: DATA_ERROR,
+                payload: error.response.data
+            })
         }
-    };
+    // };
 };
 
-export const add_data = () => {
+export const add_data = (data) => {
     return async (dispatch) => {
-        const res = await fetch("/");
+        set_loading();
+        const res = await fetch("/data", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        const returnData = res.json();
+        dispatch({
+            type: ADD_DATA,
+            payload: returnData
+        });
     };
 };
